@@ -27,6 +27,7 @@ dependencies {
 	implementation("org.hibernate:hibernate-core:6.6.15.Final")
 	implementation("org.jboss.logging:jboss-logging:3.4.0.Final")
 	implementation("org.postgresql:postgresql:42.5.4")
+    implementation("com.cloudinary:cloudinary-http44:1.39.0")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")

@@ -37,6 +37,9 @@ data class User(
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
     val weightHistory: List<UserWeightHistory> = mutableListOf(),
 
+    @OneToOne(mappedBy = "user", cascade = [CascadeType.ALL], fetch = FetchType.LAZY, orphanRemoval = true)
+    val photo: PhotoUser? = null
+
 
 )
 

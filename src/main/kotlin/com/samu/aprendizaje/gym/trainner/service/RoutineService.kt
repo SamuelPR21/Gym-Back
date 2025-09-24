@@ -6,7 +6,6 @@ import com.samu.aprendizaje.gym.trainner.models.Routine
 import com.samu.aprendizaje.gym.trainner.repository.RoutineRepository
 import com.samu.aprendizaje.gym.trainner.repository.UserRepository
 import org.springframework.stereotype.Service
-import java.time.LocalDate
 
 
 @Service

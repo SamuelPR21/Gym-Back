@@ -53,6 +53,10 @@ class SecurityConfig(private val jwtFilter: JwtFilter) {
                     .requestMatchers(HttpMethod.GET,"/weight/**").permitAll()
                     .requestMatchers(HttpMethod.POST,"/weight/**").permitAll()
 
+                    .requestMatchers(HttpMethod.POST, "/photo/**").permitAll()
+                    .requestMatchers(HttpMethod.DELETE, "/photo/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/photo/**").permitAll()
+
 
 
 
