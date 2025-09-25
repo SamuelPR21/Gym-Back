@@ -1,6 +1,5 @@
 package com.samu.aprendizaje.gym.trainner.service
 
-
 import com.cloudinary.Cloudinary
 import com.samu.aprendizaje.gym.trainner.models.PhotoUser
 import com.samu.aprendizaje.gym.trainner.repository.PhotoUserRepository
@@ -15,10 +14,13 @@ class PhotoUserService (private val photoUserRepository: PhotoUserRepository, pr
 
     @Transactional
     fun uploadPhoto(userId: Long, file: MultipartFile): String {
+
+        val user = userRepository.findById(userId)
+            .orElseThrow { RuntimeException("Usuario no encontrado") }
+
         val existingPhoto = photoUserRepository.findByUserId(userId)
-        if (existingPhoto != null) {
-            deleteFromCloudinary(existingPhoto.publicId)
-            photoUserRepository.deleteByUserId(userId)
+        existingPhoto?.let {
+            deleteFromCloudinary(it.publicId)
         }
 
         val uploadResult = cloudinary.uploader().upload(
@@ -29,10 +31,15 @@ class PhotoUserService (private val photoUserRepository: PhotoUserRepository, pr
         val imageUrl = uploadResult["secure_url"] as String
         val publicId = uploadResult["public_id"] as String
 
-        val user = userRepository.findById(userId)
-            .orElseThrow { RuntimeException("Usuario no encontrado") }
+        val photoUser = existingPhoto?.apply {
+            this.photoUrl = imageUrl
+            this.publicId = publicId
+        }?: PhotoUser(
+            photoUrl = imageUrl,
+            publicId = publicId,
+            user = user
+        )
 
-        val photoUser = PhotoUser(photoUrl = imageUrl, publicId = publicId, user = user)
         photoUserRepository.save(photoUser)
 
         return imageUrl

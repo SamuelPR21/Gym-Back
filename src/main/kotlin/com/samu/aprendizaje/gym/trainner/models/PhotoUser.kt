@@ -10,10 +10,10 @@ data class PhotoUser (
     val id: Long? = null,
 
     @Column(name = "photoUrl", nullable = false)
-    val photoUrl: String,
+    var photoUrl: String,
 
     @Column(name= "publicId", nullable = false)
-    val publicId: String,
+    var publicId: String,
 
     @OneToOne
     @JoinColumn(name = "userId", nullable = false)

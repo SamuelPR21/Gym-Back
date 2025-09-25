@@ -1,7 +1,5 @@
 package com.samu.aprendizaje.gym.trainner.controllers
 
-
-
 import com.samu.aprendizaje.gym.trainner.service.PhotoUserService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
