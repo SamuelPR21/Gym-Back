@@ -22,7 +22,6 @@ class UserWeightService(
             date = date
         )
 
-        // Actualiza el peso actual en la tabla User (opcional)
         val updatedUser = user.copy(currentWeights = weight)
         userRepository.save(updatedUser)
 

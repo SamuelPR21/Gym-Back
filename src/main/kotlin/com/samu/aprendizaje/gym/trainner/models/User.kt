@@ -1,5 +1,6 @@
 package com.samu.aprendizaje.gym.trainner.models
 import jakarta.persistence.*
+import java.time.LocalDate
 
 @Entity
 @Table(name = "users")
@@ -28,8 +29,11 @@ data class User(
     @Column(name = "goalWeights", nullable = false)
     val goalWeights: Int? = null,
 
-    @Column(name = "dateOfBirth", nullable = true)
-    val dateOfBirth: String,
+    @Column(name = "date_of_birth", nullable = true)
+    val dateOfBirth: LocalDate? = null,
+
+    @Column(name = "date_register", nullable = false)
+    val dateRegister: LocalDate = LocalDate.now(),
 
     @OneToMany(mappedBy = "user", cascade =  [CascadeType.ALL], fetch = FetchType.LAZY)
     val routines: List<Routine> = emptyList(),

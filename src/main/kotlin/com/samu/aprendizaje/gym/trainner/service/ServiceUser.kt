@@ -4,13 +4,16 @@ import com.samu.aprendizaje.gym.trainner.dto.Auth.AuthLoginRequest
 import com.samu.aprendizaje.gym.trainner.dto.user.DtoRequest
 import com.samu.aprendizaje.gym.trainner.dto.user.DtoResponse
 import com.samu.aprendizaje.gym.trainner.models.User
+import com.samu.aprendizaje.gym.trainner.models.UserWeightHistory
 import com.samu.aprendizaje.gym.trainner.repository.UserRepository
+import com.samu.aprendizaje.gym.trainner.repository.WeightHistoryRepository
 import com.samu.aprendizaje.gym.trainner.security.JwtService
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import java.time.LocalDate
 
 @Service
 class ServiceUser(
@@ -18,6 +21,7 @@ class ServiceUser(
     private val jwtService: JwtService,
     private val passwordEncoder: PasswordEncoder,
     private val authenticationManager: AuthenticationManager,
+    private val weightHistoryRepository: WeightHistoryRepository
 ) {
 
     fun create(dto: DtoRequest): DtoResponse {
@@ -28,7 +32,8 @@ class ServiceUser(
             password = dto.password,
             currentWeights = dto.currentWeights,
             goalWeights = dto.goalWeights,
-            dateOfBirth = dto.dateOfBirth
+            dateOfBirth = dto.dateOfBirth?.let { LocalDate.parse(it) },
+            dateRegister = LocalDate.now()
         )
         return userRepository.save(user).toResponse()
     }
@@ -78,8 +83,19 @@ class ServiceUser(
             password = passwordEncoder.encode(dto.password),
             currentWeights = dto.currentWeights,
             goalWeights = dto.goalWeights,
-            dateOfBirth = dto.dateOfBirth,
+            dateOfBirth = dto.dateOfBirth?.let { LocalDate.parse(it) },
+            dateRegister = LocalDate.now()
         )
+
+        val savedUser = userRepository.save(user)
+        dto.currentWeights?.let { initialWeight ->
+            val weightHistory = UserWeightHistory(
+                user = savedUser,
+                weight = initialWeight.toFloat(),
+                date = savedUser.dateRegister
+            )
+            weightHistoryRepository.save(weightHistory)
+        }
 
         return userRepository.save(user).toResponse()
     }
@@ -98,6 +114,6 @@ class ServiceUser(
     }
 
     private fun User.toResponse() = DtoResponse(
-        id, name, username, email, password, currentWeights, goalWeights, dateOfBirth
+        id, name, username, email, password, currentWeights, goalWeights, dateOfBirth.toString(), dateRegister.toString()
     )
 }

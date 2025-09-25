@@ -1,0 +1,2 @@
+ALTER TABLE users
+    ADD COLUMN date_register DATE DEFAULT CURRENT_DATE;

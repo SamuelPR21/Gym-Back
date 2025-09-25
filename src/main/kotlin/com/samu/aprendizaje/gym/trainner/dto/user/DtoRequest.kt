@@ -7,5 +7,5 @@ data class DtoRequest(
     val password: String,
     val currentWeights: Int?,
     val goalWeights: Int?,
-    val dateOfBirth: String,
+    val dateOfBirth: String?,
 )

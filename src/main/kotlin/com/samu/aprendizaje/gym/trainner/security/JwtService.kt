@@ -23,7 +23,9 @@ class JwtService {
         claims["username"] = user.username
         claims["currentWeights"] = user.currentWeights
         claims["goalWeights"] = user.goalWeights
-        claims["dateOfBirth"] = user.dateOfBirth
+        claims["dateOfBirth"] = user.dateOfBirth?.toString()
+        claims["dateRegister"] = user.dateRegister.toString()
+
 
         return Jwts.builder()
             .setClaims(claims)
